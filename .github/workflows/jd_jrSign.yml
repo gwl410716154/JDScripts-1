@@ -1,16 +1,14 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: jd_collectProduceScore
+name: jd_jrSign
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 * * * *'
-  watch:
-    types: started
+    - cron: '10 22 * * *'
   repository_dispatch:
-    types: collectProduceScore
+    types: jr_sign
 jobs:
   build:
 
@@ -21,6 +19,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: lxk0301/jd_scripts
+          ref: master
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -35,11 +34,12 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【京东全民营业领金币】'
+      - name: '运行 【金融打卡领年终奖脚本】'
         run: |
-          node jd_collectProduceScore.js
+          node jr_sign.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
           BARK_PUSH: ${{ secrets.BARK_PUSH }}
