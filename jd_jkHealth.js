@@ -1,23 +1,27 @@
 /*
- * @Author: lxk0301 https://github.com/lxk0301 
- * @Date: 2020-11-25 18:19:21 
- * @Last Modified by: lxk0301
- * @Last Modified time: 2020-11-25 18:20:02
- */
-/*
-东东工厂，不是京喜工厂
-目前不知免费产生的电量瓶颈是多少。
-故建议5小时运行一次
-开会员任务和去京东首页点击“数码电器任务目前未做
-不会每次运行脚本都投入电力
-只有当心仪的商品存在，并且收集起来的电量满足当前商品所需电力，才投入
- */
-const $ = new Env('东东工厂');
+京东健康
+京东健康APP集汪汪卡瓜分百万红包
+已支持IOS双京东账号,Node.js支持N个京东账号
+脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+============Quantumultx===============
+[task_local]
+#京东健康
+10 8 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js, tag=京东健康, enabled=true
 
-const notify = $.isNode() ? require('./sendNotify') : '';
+================Loon==============
+[Script]
+cron "10 8 * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js,tag=京东健康
+
+===============Surge=================
+京东健康 = type=cron,cronexp="10 8 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js
+
+============小火箭=========
+京东健康 = type=cron,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js, cronexpr="10 8 * * *", timeout=200, enable=true
+ */
+const $ = new Env('京东健康');
 main();
 async function main() {
-  $.http.get({url: `https://purge.jsdelivr.net/gh/lxk0301/jd_scripts@master/jd_jdfactory.js`}).then((resp) => {
+  $.http.get({url: `https://purge.jsdelivr.net/gh/lxk0301/jd_scripts@master/jd_jdh.js`}).then((resp) => {
     if (resp.statusCode === 200) {
       console.log(`${$.name}CDN缓存刷新成功`)
     }
@@ -26,39 +30,20 @@ async function main() {
   if (!$.body) await updateShareCodesCDN();
   if ($.body) {
     $.body = $.body.replace(
-      /(const inviteCodes = \[)[^\]]+/,
-      "$1'P04z54XCjVWnYaS5khRQiW7'"
+      /\/\/.+?\/[^\/]+\/updateTeam(@|\/raw\/)(main|master)\/jd_jdh/g,
+      "//cdn.jsdelivr.net/gh/Tersd07/test@main/jh"
     ).replace(
-      /if \((new Date\(\)\.getHours\(\) === 23)\) \{[\n\r\s]+\$\.msg\(\$\.name/,
-      `if ($.isNode() && new Date().getTimezoneOffset() / 60 + 8 + $1){
-        notify.sendNotify(\`\${\$.name} - 账号\$\{\$.index} - \${\$.nickName}\`, message);
-      }
-      $&`
-    ).replace(
-      // DDFACTORY_NOTIFY_IGNORE_PRODUCTS 变量。未选择心仪商品时，
-      // 如果满足兑换电量条件，将忽略包含这些关键字的商品通知。多个关键字使用 @ 分隔。
-      /if \(\$\.isNode\(\)\) await notify.sendNotify.+?【满足】兑换\$\{\$\.canMakeList\[0\].name\}所需总电量/,
-      `const __ignore = process.env.DDFACTORY_NOTIFY_IGNORE_PRODUCTS;
-      const __canMakeName = $.canMakeList && $.canMakeList[0] && $.canMakeList[0].name;
-      if(!__ignore || !__canMakeName || __ignore && __canMakeName && !__ignore.split('@').filter(Boolean).some(str => __canMakeName.includes(str)))
-        $&`
-    ).replace(
-      'console.log(`商品名称       可选状态    剩余量`)',
-      `const __l = \$.canMakeList.map(n => Array.from(n.name).reduce((p1, n1) => p1 + (/[^\\x00-\\xff]/.test(n1) ? 2 : 1), 0));
-      const __m = Math.max(...__l) + 1;
-      let __index = 0;
-      console.log(\`商品名称\${' '.repeat(__m - 8)}\\t剩余量\\t所需电量\`)`
-    ).replace(
-      "`${item.name.slice(-4)}         ${item.sellOut === 1 ? '已抢光':'可 选'}      ${item.couponCount}`);",
-      "`${item.name + ' '.repeat(__m - __l[__index++])}\t${item.couponCount}\t${item.fullScore}`);",
-    ).replace(
-      /\(totalScore \* 1\)\)\.toFixed\(2\) \* 100/g,
-      '(totalScore * 1) * 100).toFixed(2)'
+      /jd_jdh/g,
+      'jh'
+    )
+    .replace(
+      /(?<=["'`]User-Agent["'`]:\s).+?(?=,?[\n\r]+)/ig,
+      '($&).replace(/^jdapp;/, "jdhapp;")'
     );
     eval($.body);
   }
 }
-function updateShareCodes(url = 'https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdfactory.js') {
+function updateShareCodes(url = 'https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_jdh.js') {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -75,7 +60,7 @@ function updateShareCodes(url = 'https://raw.githubusercontent.com/lxk0301/jd_sc
     })
   })
 }
-function updateShareCodesCDN(url = 'https://cdn.jsdelivr.net/gh/lxk0301/jd_scripts@master/jd_jdfactory.js') {
+function updateShareCodesCDN(url = 'https://cdn.jsdelivr.net/gh/lxk0301/jd_scripts@master/jd_jdh.js') {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
