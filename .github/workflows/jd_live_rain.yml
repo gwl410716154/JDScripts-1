@@ -6,7 +6,7 @@ name: jd_live_rain
 on:
   workflow_dispatch:
   schedule:
-    - cron: '55 0,2,4,6,8,10,11,12,14,15 * * *'
+    - cron: '54 0,2,4,6,8,10,11,12,14,15 * * *'
   repository_dispatch:
     types: live_rain
 jobs:
@@ -41,6 +41,8 @@ jobs:
           JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
+          QQ_SKEY: ${{ secrets.QQ_SKEY }}
+          QQ_MODE: ${{ secrets.QQ_MODE }}
           BARK_PUSH: ${{ secrets.BARK_PUSH }}
           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
           TG_USER_ID: ${{ secrets.TG_USER_ID }}
