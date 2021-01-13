@@ -1,14 +1,14 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: jd_bookshop
+name: jd_family
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '1 0,4,10 * * *'
+    - cron: '2 0,4,8,16 * * *'
   repository_dispatch:
-    types: bookshop
+    types: family
 jobs:
   build:
 
@@ -34,10 +34,9 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【口袋书店脚本】'
+      - name: '运行 【京东家庭号脚本】'
         run: |
-          sed -ri "s/28a699ac78d74aa3b31f7103597f8927[^']*/7d978a56a7a144cdb10f92042f87bcd7/g" jd_bookshop.js
-          node jd_bookshop.js
+          node jd_family.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
@@ -52,5 +51,4 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
-          PURCHASE_SHOPS: ${{ secrets.PURCHASE_SHOPS }}
-          BOOKSHOP_SHARECODES: ${{ secrets.BOOKSHOP_SHARECODES }}
+
