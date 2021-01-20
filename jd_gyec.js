@@ -49,8 +49,8 @@ async function main() {
       /((?:const|let) inviteCodes = \[)[^\]]+/,
       "$1'653654','653654'"
     ).replace(
-    	/\('(\\x47\\x49\\x54\\x48\\x55\\x42|GI.HUB)'\)/g,
-    	"('GxIxTxHxUxB')"
+      /\((['"`])(\\x47\\x49\\x54\\x48\\x55\\x42|GI.HUB)\1\)/g,
+      "('GxIxTxHxUxB')"
     );
     eval($.body);
   }
