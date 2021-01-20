@@ -20,7 +20,8 @@ cron "0 0,9,11,13,15,17,19,20,21,23 * * *" script-path=https://raw.githubusercon
 ============小火箭=========
 直播红包雨 = type=cron,script-path=https://raw.githubusercontent.com/Tersd07/st1/master/jd_live_redrain.js, cronexpr="0 0,9,11,13,15,17,19,20,21,23 * * *", timeout=200, enable=true
  */
-const $ = new Env('直播红包雨');
+const scriptName = (process.argv || [])[2] || 'nian';
+const $ = new Env(scriptName === 'nian' ? '年货直播红包雨' : '官方号直播红包雨');
 main();
 async function main() {
   const hours = [0, 9, 11, 13, 15, 17, 19, 20, 21, 23];
@@ -43,18 +44,26 @@ async function main() {
       await $.wait(t);
     }
   }
-  $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_live_redrain.js`}).then((resp) => {
-    if (resp.statusCode === 200) {
-      console.log(`${$.name}CDN缓存刷新成功`)
-    }
-  });
+
   await updateShareCodes();
-  if (!$.body) await updateShareCodesCDN();
+  if (!$.body) {
+    await new Promise(async (resolve) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/shylocks/Loon@main/jd_live_redrain_${scriptName}.js`}).then((resp) => {
+        if (resp.statusCode === 200)
+          console.log(`${$.name}CDN缓存刷新成功`)
+        resolve();
+      });
+      await $.wait(10000);
+      resolve();
+    });
+    await updateShareCodesCDN();
+  }
   if ($.body) {
     $.body = $.body.replace(
-      /require\('\.\.\//g,
-      "require\('./"
+      /\('(\\x47\\x49\\x54\\x48\\x55\\x42|GI.HUB)'\)/g,
+      "('GxIxTxHxUxB')"
     );
+    /*
     //同时运行 jd_live_redRain3.json 的活动 id。
     const m = $.body.match(/(function getRedRain)(\(\)[\s\S]+?)(?=\nfunction)/);
     const m1 = $.body.match(/(await getRedRain)(\(\);[\s\S]+?\$\.log\(`远程红包雨配置获取成功`\)\s+\})/);
@@ -107,11 +116,11 @@ async function main() {
           message += \`\\n共获得 \${_beansCount} 京豆。\`;
         };`
       );
-    }
+    }*/
     eval($.body);
   }
 }
-function updateShareCodes(url = 'https://raw.githubusercontent.com/Tersd07/st1/master/jd_live_redrain.js') {
+function updateShareCodes(url = `https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain_${scriptName}.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -128,7 +137,7 @@ function updateShareCodes(url = 'https://raw.githubusercontent.com/Tersd07/st1/m
     })
   })
 }
-function updateShareCodesCDN(url = 'https://cdn.jsdelivr.net/gh/Tersd07/st1@master/jd_live_redrain.js') {
+function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/shylocks/Loon@main/jd_live_redrain_${scriptName}.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
