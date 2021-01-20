@@ -17,7 +17,18 @@ async function main() {
     }
   });
   await updateShareCodes();
-  if (!$.body) await updateShareCodesCDN();
+  if (!$.body) {
+    await new Promise(async (resolve) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/799953468/Quantumult-X@master/Scripts/JD/jd_new_shop.js`}).then((resp) => {
+        if (resp.statusCode === 200)
+          console.log(`${$.name}CDN缓存刷新成功`)
+        resolve();
+      });
+      await $.wait(10000);
+      resolve();
+    });
+    await updateShareCodesCDN();
+  }
   if ($.body) {
     $.body = $.body.replace(
       /P04z54XCjVXmIaW5m9cZ2esjHVDlzxvdLVQQM0/g,

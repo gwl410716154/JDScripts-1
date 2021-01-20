@@ -10,13 +10,19 @@ const $ = new Env('东东工厂');
 const notify = $.isNode() ? require('./sendNotify') : '';
 main();
 async function main() {
-  $.http.get({url: `https://purge.jsdelivr.net/gh/799953468/Quantumult-X@master/Scripts/JD/jd_factory.js`}).then((resp) => {
-    if (resp.statusCode === 200) {
-      console.log(`${$.name}CDN缓存刷新成功`)
-    }
-  });
   await updateShareCodes();
-  if (!$.body) await updateShareCodesCDN();
+  if (!$.body) {
+    await new Promise(async (resolve) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/799953468/Quantumult-X@master/Scripts/JD/jd_factory.js`}).then((resp) => {
+        if (resp.statusCode === 200)
+          console.log(`${$.name}CDN缓存刷新成功`)
+        resolve();
+      });
+      await $.wait(10000);
+      resolve();
+    });
+    await updateShareCodesCDN();
+  }
   if ($.body) {
     const sendNotify = `await notify.sendNotify(\`\${$.name} - 账号\${$.index} - \${UserName} 可领取\`,
     \`【京东账号\${$.index}】\${$.UserName}\n【提醒⏰】商品：\${$.factoryInfo.data.result.factoryInfo.name} 库存：\${$.factoryInfo.data.result.factoryInfo.couponCount } 已可领取\n请去京东APP查看。\` +
