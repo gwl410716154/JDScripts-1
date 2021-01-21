@@ -6,7 +6,7 @@ name: jd_firecrackers
 on:
   workflow_dispatch:
   schedule:
-    - cron: '2 13,23 * * *'
+    - cron: '2 23 * * *'
   repository_dispatch:
     types: firecrackers
 jobs:
