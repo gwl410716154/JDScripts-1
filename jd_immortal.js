@@ -46,6 +46,9 @@ async function main() {
     ).replace(
       /\((['"`])(\\x47\\x49\\x54\\x48\\x55\\x42|GI.HUB)\1\)/g,
       "('GxIxTxHxUxB')"
+    ).replace(
+      'const randomCount =',
+      '$& 3; '
     );
     eval($.body);
   }
