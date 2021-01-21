@@ -27,13 +27,19 @@ const $ = new Env('京喜工厂参团');
 const notify = $.isNode() ? require('./sendNotify') : '';
 main();
 async function main() {
-  $.http.get({url: `https://purge.jsdelivr.net/gh/whyour/hundun@master/quanx/jx_factory.js`}).then((resp) => {
-    if (resp.statusCode === 200) {
-      console.log(`${$.name}CDN缓存刷新成功`)
-    }
-  });
   await updateShareCodes();
-  if (!$.body) await updateShareCodesCDN();
+  if (!$.body) {
+    await new Promise(async (resolve) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/whyour/hundun@master/quanx/jx_factory.js`}).then((resp) => {
+        if (resp.statusCode === 200)
+          console.log(`${$.name}CDN缓存刷新成功`)
+        resolve();
+      });
+      await $.wait(10000);
+      resolve();
+    });
+    await updateShareCodesCDN();
+  }
   if ($.body) {
     $.body = $.body.replace(
       /await getCommodityDetail[\s\S]+(?=await getTuanId)|await showMsg\(\);/gi,

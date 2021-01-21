@@ -31,24 +31,26 @@ const scriptName = (process.argv || [])[2] || 'gyec';
 const $ = new Env(scriptName === 'gyec' ? '工业品爱消除' : '东东爱消除');
 main();
 async function main() {
-  await new Promise(async (resolve) => {
-    $.http.get({url: `https://purge.jsdelivr.net/gh/shylocks/Loon@main/jd_${scriptName}.js`}).then((resp) => {
-      if (resp.statusCode === 200)
-        console.log(`${$.name}CDN缓存刷新成功`)
+  await updateShareCodes();
+  if (!$.body) {
+    await new Promise(async (resolve) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/shylocks/Loon@main/jd_${scriptName}.js`}).then((resp) => {
+        if (resp.statusCode === 200)
+          console.log(`${$.name}CDN缓存刷新成功`)
+        resolve();
+      });
+      await $.wait(10000);
       resolve();
     });
-    await $.wait(10000);
-    resolve();
-  });
-  await updateShareCodes();
-  if (!$.body) await updateShareCodesCDN();
+    await updateShareCodesCDN();
+  }
   if ($.body) {
     $.body = $.body.replace(
       /((?:const|let) inviteCodes = \[)[^\]]+/,
       "$1'653654','653654'"
     ).replace(
-    	/\('(\\x47\\x49\\x54\\x48\\x55\\x42|GI.HUB)'\)/g,
-    	"('GxIxTxHxUxB')"
+      /\((['"`])(\\x47\\x49\\x54\\x48\\x55\\x42|GI.HUB)\1\)/g,
+      "('GxIxTxHxUxB')"
     );
     eval($.body);
   }

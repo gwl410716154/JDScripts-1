@@ -10,13 +10,19 @@ detail url: https://github.com/ruicky/jd_sign_bot
 const $ = new Env('京豆签到');
 main();
 async function main() {
-  $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_bean_sign.js`}).then((resp) => {
-    if (resp.statusCode === 200) {
-      console.log(`${$.name}CDN缓存刷新成功`)
-    }
-  });
   await updateShareCodes();
-  if (!$.body) await updateShareCodesCDN();
+  if (!$.body) {
+    await new Promise(async (resolve) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_bean_sign.js`}).then((resp) => {
+        if (resp.statusCode === 200)
+          console.log(`${$.name}CDN缓存刷新成功`)
+        resolve();
+      });
+      await $.wait(10000);
+      resolve();
+    });
+    await updateShareCodesCDN();
+  }
   if ($.body) {
     $.body = $.body.replace(
       //仅在 0 时通知。

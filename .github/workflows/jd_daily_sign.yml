@@ -183,7 +183,7 @@ jobs:
       - name: '运行 【盲盒抽京豆脚本】'
         run: |
           curl -O https://raw.githubusercontent.com/shylocks/Loon/main/jd_mh.js > /dev/null 2>&1
-          sed -ri "s/\('(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)'\)/('GxIxTxHxUxB')/g" jd_mh.js
+          sed -ri "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_mh.js
           node jd_mh.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
@@ -202,7 +202,7 @@ jobs:
       - name: '运行 【京东秒秒币脚本】'
         run: |
           curl -O https://raw.githubusercontent.com/shylocks/Loon/main/jd_ms.js > /dev/null 2>&1
-          sed -ri "s/\('(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)'\)/('GxIxTxHxUxB')/g" jd_ms.js
+          sed -ri "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_ms.js
           node jd_ms.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
@@ -221,7 +221,7 @@ jobs:
       - name: '运行 【小鸽有礼脚本】'
         run: |
           curl -O https://raw.githubusercontent.com/shylocks/Loon/main/jd_xg.js > /dev/null 2>&1
-          sed -ri "s/\('(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)'\)/('GxIxTxHxUxB')/g" jd_xg.js
+          sed -ri "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_xg.js
           node jd_xg.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}

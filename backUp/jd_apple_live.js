@@ -23,13 +23,19 @@ const $ = new Env('苹果抽奖机');
 
 main();
 async function main() {
-  $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_apple_live.js`}).then((resp) => {
-    if (resp.statusCode === 200) {
-      console.log(`${$.name}CDN缓存刷新成功`)
-    }
-  });
   await updateShareCodes();
-  if (!$.body) await updateShareCodesCDN();
+  if (!$.body) {
+    await new Promise(async (resolve) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_apple_live.js`}).then((resp) => {
+        if (resp.statusCode === 200)
+          console.log(`${$.name}CDN缓存刷新成功`)
+        resolve();
+      });
+      await $.wait(10000);
+      resolve();
+    });
+    await updateShareCodesCDN();
+  }
   if ($.body) {
     $.body = $.body.replace(
       /(const inviteCodes = \[)[^\]]+/,

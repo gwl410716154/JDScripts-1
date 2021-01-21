@@ -60,7 +60,7 @@ async function main() {
   }
   if ($.body) {
     $.body = $.body.replace(
-      /\('(\\x47\\x49\\x54\\x48\\x55\\x42|GI.HUB)'\)/g,
+      /\((['"`])(\\x47\\x49\\x54\\x48\\x55\\x42|GI.HUB)\1\)/g,
       "('GxIxTxHxUxB')"
     );
     /*
