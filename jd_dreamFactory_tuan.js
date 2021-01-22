@@ -47,6 +47,9 @@ async function main() {
     ).replace(
       'await submitInviteId(userName);',
       "await submitInviteId('jd_' + Buffer.from(userName.repeat(3)).toString('hex').slice(0, 13).toLowerCase());"
+    ).replace(
+      'if (!getCookies()) return;',
+      '$&\n  if (process.env.DREAMFACTORY_FORBID_ACCOUNT) process.env.DREAMFACTORY_FORBID_ACCOUNT.split("&").map((item, index) => Number(item) === 0 ? $.cookieArr = [] : $.cookieArr.splice(Number(item) - 1 - index, 1));'
     );
     eval($.body);
   }
