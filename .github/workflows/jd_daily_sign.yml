@@ -144,7 +144,9 @@ jobs:
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
       - name: '运行 【crazy joy 脚本】'
         run: |
-          sed -ri "s/(const inviteCodes = \[)/\1'egfxMLFSjng='];const _xx=[/; s/(getUserInfo\(code = \")[^\"]+/\1egfxMLFSjng=/" jd_crazy_joy.js
+          sed -ri -e "s/(const inviteCodes = \[)/\1'egfxMLFSjng='];const _xx=[/"\
+              -e "s/(getUserInfo\(code = \")[^\"]+/\1egfxMLFSjng=/"\
+              -e "s/const randomCount =/& 3;/g" jd_crazy_joy.js
           node jd_crazy_joy.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
@@ -223,6 +225,25 @@ jobs:
           curl -O https://raw.githubusercontent.com/shylocks/Loon/main/jd_xg.js > /dev/null 2>&1
           sed -ri "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_xg.js
           node jd_xg.js
+        env:
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
+          JD_DEBUG: ${{ secrets.JD_DEBUG }}
+          PUSH_KEY: ${{ secrets.PUSH_KEY }}
+          QQ_SKEY: ${{ secrets.QQ_SKEY }}
+          QQ_MODE: ${{ secrets.QQ_MODE }}
+          BARK_PUSH: ${{ secrets.BARK_PUSH }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_USER_ID: ${{ secrets.TG_USER_ID }}
+          BARK_SOUND: ${{ secrets.BARK_SOUND }}
+          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
+          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
+          IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
+      - name: '运行 【闪购盲盒脚本】'
+        run: |
+          sed -ri -e ":begin; /(const|let) inviteCodes = \[/,/\]/ { /\]/! { $! { N; b begin }; }; s/\[.+\]/['T007w6Q5BV0CjVWmIaW5kRrbA']/; };"\
+            -e "s/const randomCount =/& 3;/g" jd_sgmh.js
+          node jd_sgmh.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
