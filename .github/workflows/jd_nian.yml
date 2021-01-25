@@ -37,7 +37,8 @@ jobs:
       - name: '运行 【京东炸年兽🧨脚本】'
         run: |
           sed -ri -e "s/if \(\!code(\) continue)/if(\!(code = code.trim()) \|\| \!\/^[a-z\\\d][a-z\\\d=_-]+?[^_]\$\/i.test(code)\1/g"\
-            -e "s/\`[^@\`,\s]+?@[^\`]+?/\`cgxZUjjIYfmWpm2ODmSsnUuC/g"\
+            -e "s/const inviteCodes =/& ['cgxZUjjIYfmWpm2ODmSsnUuC'];/g"\
+            -e "s/const pkInviteCodes =/& ['IgNWdiLGaPans0SMS2qpo5bFypAKR6nGrM4'];/g"\
             -e "s/const randomCount =/&3;/g" jd_nian.js
           node jd_nian.js
         env:
@@ -55,3 +56,4 @@ jobs:
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
           JDNIAN_SHARECODES: ${{ secrets.JDNIAN_SHARECODES }}
+          JDNIANPK_SHARECODES: ${{ secrets.JDNIANPK_SHARECODES }}
