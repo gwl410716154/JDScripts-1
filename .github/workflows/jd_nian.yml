@@ -38,7 +38,7 @@ jobs:
         run: |
           sed -ri -e "s/if \(\!code(\) continue)/if(\!(code = code.trim()) \|\| \!\/^[a-z\\\d][a-z\\\d=_-]+?[^_]\$\/i.test(code)\1/g"\
             -e "s/const inviteCodes =/& ['cgxZUjjIYfmWpm2ODmSsnUuC'];/g"\
-            -e "s/const pkInviteCodes =/& ['IgNWdiLGaPans0SMS2qpo5bFypAKR6nGrM4'];/g"\
+            -e "s/const pkInviteCodes =/& ['IgNWdiLGaPans0SMS2qpo5bFypAKR6nGrM0'];/g"\
             -e "s/const randomCount =/&3;/g" jd_nian.js
           node jd_nian.js
         env:
