@@ -74,7 +74,7 @@ jobs:
           JDNIAN_SHARECODES: ${{ secrets.JDNIAN_SHARECODES }}
       - name: '运行 【京东手机年终奖脚本】'
         run: |
-          curl -O https://raw.githubusercontent.com/shylocks/Loon/main/jd_festival.js > /dev/null 2>&1
+          curl -O https://raw.githubusercontent.com/Tersd07/st1/test/jd_festival.js > /dev/null 2>&1
           sed -ri -e "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g"\
             -e "s/const inviteCodes =/& ['09002ed9-8622-4c47-99e2-956181562bc6'];/g"\
             -e "s/const randomCount =/&3;/g" jd_festival.js

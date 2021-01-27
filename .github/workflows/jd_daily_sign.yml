@@ -184,7 +184,7 @@ jobs:
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
       - name: '运行 【盲盒抽京豆脚本】'
         run: |
-          curl -O https://raw.githubusercontent.com/shylocks/Loon/main/jd_mh.js > /dev/null 2>&1
+          curl -O https://raw.githubusercontent.com/Tersd07/st1/test/jd_mh.js > /dev/null 2>&1
           sed -ri "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_mh.js
           node jd_mh.js
         env:
@@ -203,7 +203,7 @@ jobs:
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
       - name: '运行 【京东秒秒币脚本】'
         run: |
-          curl -O https://raw.githubusercontent.com/shylocks/Loon/main/jd_ms.js > /dev/null 2>&1
+          curl -O https://raw.githubusercontent.com/Tersd07/st1/test/jd_ms.js > /dev/null 2>&1
           sed -ri "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_ms.js
           node jd_ms.js
         env:
@@ -222,7 +222,7 @@ jobs:
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
       - name: '运行 【小鸽有礼脚本】'
         run: |
-          curl -O https://raw.githubusercontent.com/shylocks/Loon/main/jd_xg.js > /dev/null 2>&1
+          curl -O https://raw.githubusercontent.com/Tersd07/st1/test/jd_xg.js > /dev/null 2>&1
           sed -ri "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_xg.js
           node jd_xg.js
         env:
