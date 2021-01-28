@@ -18,8 +18,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: Tersd07/st1
-          ref: master
+          repository: Tersd07/JDScripts
+          ref: main
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -36,10 +36,6 @@ jobs:
           npm install
       - name: '运行 【京东炸年兽🧨脚本】'
         run: |
-          sed -ri -e "s/if \(\!code(\) continue)/if(\!(code = code.trim()) \|\| \!\/^[a-z\\\d][a-z\\\d=_-]+?[^_]\$\/i.test(code)\1/g"\
-            -e "s/const inviteCodes =/& ['cgxZUjjIYfmWpm2ODmSsnUuC'];/g"\
-            -e "s/const pkInviteCodes =/& ['IgNWdiLGaPans0SMS2qpo5bFypAKR6nGrMw'];/g"\
-            -e "s/const randomCount =/&3;/g" jd_nian.js
           node jd_nian.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
