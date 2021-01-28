@@ -36,6 +36,7 @@ jobs:
           npm install
       - name: '运行 【京东神仙书院答题脚本】'
         run: |
+          curl -O https://raw.githubusercontent.com/Tersd07/st1/master/jd_immortal_answer.js > /dev/null 2>&1
           node jd_immortal_answer.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
