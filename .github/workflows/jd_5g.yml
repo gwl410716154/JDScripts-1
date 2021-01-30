@@ -36,8 +36,7 @@ jobs:
           npm install
       - name: '运行 【5G狂欢城脚本】'
         run: |
-          sed -ri -e "s/(const|let) inviteCodes =/& ['f085813d-791d-4377-bda0-248c04e4b99f', 'f085813d-791d-4377-bda0-248c04e4b99f']; /g"\
-            -e "s/await updateShareCodes/[]; \/\/ &/g"\
+          sed -ri -e "s/(https?:\/\/).+?updateTeam.+?(\.json)/\1cdn.jsdelivr.net\/gh\/Tersd07\/test@main\/fg\2/g"\
             -e "s/const randomCount =/&3;/g" jd_5g.js
           node jd_5g.js
         env:
