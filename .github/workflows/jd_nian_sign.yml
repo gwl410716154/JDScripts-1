@@ -36,6 +36,7 @@ jobs:
           npm install
       - name: '运行 【京东炸年兽签到任务🧨脚本】'
         run: |
+          sed -ri "s/\\$\.secretp = \\$\.userInfo\.secretp.+/&\nif($.userInfo.raiseInfo.scoreLevel == 31) \{console.log('已经达到最大等级，跳过签到。');\$.secretp = false; return; \}/g" jd_nian_sign.js
           node jd_nian_sign.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
