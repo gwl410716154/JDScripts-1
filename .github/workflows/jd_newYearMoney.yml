@@ -36,7 +36,7 @@ jobs:
           npm install
       - name: '运行 【京东压岁钱脚本】'
         run: |
-          sed -ri -e "s/const inviteCodes =/& ['h8t7HqUE7MdXT659NrZx_SpLTLWN9NUBCw'];/g"\
+          sed -ri -e "s/const inviteCodes =/& ['h8t7HqUE7MdXT659NrZx_SlGSbCA89oBDw'];/g"\
             -e "s/const randomCount =/&3;/g" jd_newYearMoney.js
           node jd_newYearMoney.js
         env:

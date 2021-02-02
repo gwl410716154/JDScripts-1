@@ -32,9 +32,9 @@ async function main() {
   }
   if ($.body) {
     $.body = $.body.replace(
-      /(const inviteCodes = \[)[^\]]+/,
-      "$1'T007w6Q5BV0CjVWnYaS5kRrbA'"
-    ).replace(
+    //  /(const inviteCodes = \[)[^\]]+/,
+    //  "$1'T007w6Q5BV0CjVWnYaS5kRrbA'"
+    // ).replace(
       /if \((new Date\(\)\.getHours\(\) === 23)\) \{[\n\r\s]+\$\.msg\(\$\.name/,
       `if ($.isNode() && new Date().getTimezoneOffset() / 60 + 8 + $1){
         notify.sendNotify(\`\${\$.name} - 账号\$\{\$.index} - \${\$.nickName}\`, message);
