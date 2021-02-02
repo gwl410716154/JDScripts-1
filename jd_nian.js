@@ -25,7 +25,18 @@ async function main() {
       /((?:const|let) pkInviteCodes = \[)[^\]]+/,
       `$1'${code || 'IgNWdiLGaPans0SMS2qpo5bFypAKR6nGrMw'}'`
     ).replace(
-      'const randomCount =', '$& 3;'
+      'const randomCount =', '$& 3; $._scoreLevel = false;'
+    ).replace(
+      /console\.log\(`\\n\\n当前等级.+/,
+      `$&\nif($.userInfo && $.userInfo.raiseInfo && $.userInfo.raiseInfo.scoreLevel === 31) {
+        console.log('已经达到最大等级，跳过做任务。');
+        return resolve($._scoreLevel = true);
+      }`
+    ).replace(
+      /await (killCouponList|map|queryMaterials|getTaskList|doTask|getSpecialGiftDetail)\(/g,
+      'if(!$._scoreLevel) $&'
+    ).replace(
+      'await helpSuper()', ''
     );
     eval($.body);
   }
