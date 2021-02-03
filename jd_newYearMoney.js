@@ -1,12 +1,10 @@
-const $ = new Env('京东炸年兽🧨');
-const fs = require('fs');
+const $ = new Env('京东压岁钱');
 main();
-const _pkCode = [];
 async function main() {
   await updateShareCodes();
   if (!$.body) {
     await new Promise(async (resolve) => {
-      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_nian.js`}).then((resp) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_newYearMoney.js`}).then((resp) => {
         if (resp.statusCode === 200)
           console.log(`${$.name}CDN缓存刷新成功`)
         resolve();
@@ -17,22 +15,17 @@ async function main() {
     await updateShareCodesCDN();
   }
   if ($.body) {
-    const code = await updateShareCodes1();
+    const code = JSON.parse(await updateShareCodes1() || '[]').join('@');
     $.body = $.body.replace(
       /((?:const|let) inviteCodes = \[)[^\]]+/,
-      "$1'cgxZUjjIYfmWpm2ODmSsnUuC'"
-    ).replace(
-      /((?:const|let) pkInviteCodes = \[)[^\]]+/,
-      `$1'${code || 'IgNWdiLGaPans0SMS2qpo5bFypAKR6nGrMw'}'`
+      `$1'${code || 'h8t7HqUE7MdXT659NrZx_ShMQLKG-d8JCQ'}'`
     ).replace(
       'const randomCount =', '$& 3;'
-    ).replace(
-      'await helpSuper()', ''
     );
     eval($.body);
   }
 }
-function updateShareCodes(url = `https://raw.githubusercontent.com/Tersd07/st1/master/jd_nian.js`) {
+function updateShareCodes(url = `https://raw.githubusercontent.com/Tersd07/st1/master/jd_newYearMoney.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -49,7 +42,7 @@ function updateShareCodes(url = `https://raw.githubusercontent.com/Tersd07/st1/m
     })
   })
 }
-function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/Tersd07/st1@master/jd_nian.js`) {
+function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/Tersd07/st1@master/jd_newYearMoney.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -68,7 +61,7 @@ function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/Tersd07/st1@mast
   })
 }
 
-function updateShareCodes1(url = `https://raw.githubusercontent.com/Tersd07/test/main/pk.json`) {
+function updateShareCodes1(url = `https://raw.githubusercontent.com/Tersd07/test/main/ny.json`) {
   return new Promise(resolve => {
     let code;
     $.get({url}, async (err, resp, data) => {
