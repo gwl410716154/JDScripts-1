@@ -28,6 +28,9 @@ async function main() {
       'const randomCount =', '$& 3;'
     ).replace(
       'await helpSuper()', ''
+    ).replace(
+      'hour && hour',
+      'hour && false && hour'
     );
     eval($.body);
   }
