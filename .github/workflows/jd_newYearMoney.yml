@@ -18,8 +18,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: Tersd07/st1
-          ref: master
+          repository: Tersd07/JDScripts
+          ref: main
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -36,8 +36,6 @@ jobs:
           npm install
       - name: '运行 【京东压岁钱脚本】'
         run: |
-          sed -ri -e "s/const inviteCodes =/& ['h8t7HqUE7MdXT659NrZx_SpLTLWN9NUBCw'];/g"\
-            -e "s/const randomCount =/&3;/g" jd_newYearMoney.js
           node jd_newYearMoney.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}

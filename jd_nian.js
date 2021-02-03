@@ -26,6 +26,11 @@ async function main() {
       `$1'${code || 'IgNWdiLGaPans0SMS2qpo5bFypAKR6nGrMw'}'`
     ).replace(
       'const randomCount =', '$& 3;'
+    ).replace(
+      'await helpSuper()', ''
+    ).replace(
+      'hour && hour',
+      'hour && false && hour'
     );
     eval($.body);
   }
