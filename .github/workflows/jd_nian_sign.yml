@@ -34,45 +34,6 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【京东炸年兽签到任务🧨脚本】'
-        run: |
-          sed -ri "s/\\$\.secretp = \\$\.userInfo\.secretp.+/&\nif($.userInfo.raiseInfo.scoreLevel == 31) \{console.log('已经达到最大等级，跳过签到。');\$.secretp = false; return; \}/g" jd_nian_sign.js
-          node jd_nian_sign.js
-        env:
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
-          JD_DEBUG: ${{ secrets.JD_DEBUG }}
-          PUSH_KEY: ${{ secrets.PUSH_KEY }}
-          QQ_SKEY: ${{ secrets.QQ_SKEY }}
-          QQ_MODE: ${{ secrets.QQ_MODE }}
-          BARK_PUSH: ${{ secrets.BARK_PUSH }}
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_USER_ID: ${{ secrets.TG_USER_ID }}
-          BARK_SOUND: ${{ secrets.BARK_SOUND }}
-          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
-          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
-          IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
-      - name: '运行 【京东炸年兽AR脚本】'
-        run: |
-          sed -ri -e "s/if \(\!code(\) continue)/if(\!(code = code.trim()) \|\| \!\/^[a-z\\\d][a-z\\\d=_-]+?[^_]\$\/i.test(code)\1/g"\
-            -e "s/\`[^@\`,\s]+?@[^\`]+?/\`cgxZUjjIYfmWpm2ODmSsnUuC/g"\
-            -e "s/const randomCount =/&3;/g" jd_nian_ar.js
-          node jd_nian_ar.js
-        env:
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
-          JD_DEBUG: ${{ secrets.JD_DEBUG }}
-          PUSH_KEY: ${{ secrets.PUSH_KEY }}
-          QQ_SKEY: ${{ secrets.QQ_SKEY }}
-          QQ_MODE: ${{ secrets.QQ_MODE }}
-          BARK_PUSH: ${{ secrets.BARK_PUSH }}
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_USER_ID: ${{ secrets.TG_USER_ID }}
-          BARK_SOUND: ${{ secrets.BARK_SOUND }}
-          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
-          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
-          IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
-          JDNIAN_SHARECODES: ${{ secrets.JDNIAN_SHARECODES }}
       - name: '运行 【京东手机年终奖脚本】'
         run: |
           sed -ri -e "s/const inviteCodes =/& ['09002ed9-8622-4c47-99e2-956181562bc6'];/g"\
