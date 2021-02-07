@@ -34,25 +34,6 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【京东手机年终奖脚本】'
-        run: |
-          sed -ri -e "s/const inviteCodes =/& ['09002ed9-8622-4c47-99e2-956181562bc6'];/g"\
-            -e "s/const randomCount =/&3;/g" jd_festival.js
-          node jd_festival.js
-        env:
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
-          JD_DEBUG: ${{ secrets.JD_DEBUG }}
-          PUSH_KEY: ${{ secrets.PUSH_KEY }}
-          QQ_SKEY: ${{ secrets.QQ_SKEY }}
-          QQ_MODE: ${{ secrets.QQ_MODE }}
-          BARK_PUSH: ${{ secrets.BARK_PUSH }}
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_USER_ID: ${{ secrets.TG_USER_ID }}
-          BARK_SOUND: ${{ secrets.BARK_SOUND }}
-          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
-          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
-          IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
       - name: '运行 【超级盒子脚本】'
         run: |
           sed -ri -e "s/const inviteCodes =/& ['dDHbp8VGUqeUWEzNLPknTQ'];/g"\
