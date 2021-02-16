@@ -143,9 +143,9 @@ $.info = {};
 
       //出岛寻宝大作战
       await $.wait(500);
-      // await submitGroupId();
-      // await $.wait(500);
-      // await joinGroup();
+      await submitGroupId();
+      await $.wait(500);
+      await joinGroup();
       //提交邀请码
       await $.wait(500);
       await submitInviteId('jd_' + Buffer.from($.userName.repeat(3)).toString('hex').slice(0, 13).toLowerCase());
