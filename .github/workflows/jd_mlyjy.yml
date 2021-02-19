@@ -1,14 +1,14 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: jd_live
+name: jd_mlyjy
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '2,28 2,3,4 * * *'
+    - cron: '28 23,4,10 * * *'
   repository_dispatch:
-    types: live
+    types: mlyjy
 jobs:
   build:
 
@@ -34,9 +34,13 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【京东直播脚本】'
+      - name: '运行 【美丽颜究院脚本】'
         run: |
-          node jd_live.js
+          curl -O https://raw.githubusercontent.com/i-chenzhe/qx/main/jd_mlyjy.js > /dev/null 2>&1
+          sed -ri -e "s/let helpAuthor = true/let helpAuthor = false/g"\
+            -e "s/\(new Date\)\.getHours\(\)/((new Date().getUTCHours() + 8) % 24)/g"\
+            -e "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_mlyjy.js
+          node jd_mlyjy.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}

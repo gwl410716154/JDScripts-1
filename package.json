@@ -1,5 +1,5 @@
 {
-  "name": "lxk0301",
+  "name": "xxx",
   "version": "1.0.0",
   "description": "{**When you're done, you can delete the content in this README and update the file with details for others getting started with your repository**}",
   "main": "AlipayManor.js",
@@ -11,16 +11,17 @@
     "url": "https://github.com/Tersd07/st1.git"
   },
   "keywords": [
-    "京东薅羊毛工具, 京东水果、宠物、种豆等等"
+    "薅-羊-毛工具, 水果、宠物、种豆等等"
   ],
-  "author": "lxk0301",
+  "author": "xxx",
   "license": "ISC",
   "dependencies": {
     "crypto-js": "^4.0.0",
-    "got": "^11.5.1",
-    "tough-cookie": "^4.0.0",
     "download": "^8.0.0",
+    "got": "^11.5.1",
     "request": "^2.88.2",
-    "tunnel": "0.0.6"
+    "tough-cookie": "^4.0.0",
+    "tunnel": "0.0.6",
+    "ws": "^7.4.3"
   }
 }
