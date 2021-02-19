@@ -177,23 +177,6 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
-      - name: '运行 【小鸽有礼脚本】'
-        run: |
-          node jd_xg.js
-        env:
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
-          JD_DEBUG: ${{ secrets.JD_DEBUG }}
-          PUSH_KEY: ${{ secrets.PUSH_KEY }}
-          QQ_SKEY: ${{ secrets.QQ_SKEY }}
-          QQ_MODE: ${{ secrets.QQ_MODE }}
-          BARK_PUSH: ${{ secrets.BARK_PUSH }}
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          TG_USER_ID: ${{ secrets.TG_USER_ID }}
-          BARK_SOUND: ${{ secrets.BARK_SOUND }}
-          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
-          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
-          IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
       - name: '运行 【小鸽有礼2脚本】'
         run: |
           node jd_xgyl.js
@@ -273,7 +256,7 @@ jobs:
           curl -O https://raw.githubusercontent.com/i-chenzhe/qx/main/jd_entertainment.js > /dev/null 2>&1
           sed -ri -e "s/let helpAuthor = true/let helpAuthor = false/g"\
             -e "s/('pt_key': )\\$\.UserName/\1'jd_' + Buffer.from(\$.UserName.repeat(3)).toString('hex').slice(0, 13).toLowerCase()/g"\
-            -e "s/await notify\.sendNotify/if((new Date().getUTCHours() + 8) % 24 <= 6) &/g"\
+            -e "s/await notify\.sendNotify/console.log/g"\
             -e "s/\(([\`\"\'])(\\\x47\\\x49\\\x54\\\x48\\\x55\\\x42|GI.HUB)\\1\)/('GxIxTxHxUxB')/g" jd_entertainment.js
           node jd_entertainment.js
         env:
