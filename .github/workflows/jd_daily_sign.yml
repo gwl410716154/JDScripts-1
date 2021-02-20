@@ -36,7 +36,7 @@ jobs:
           npm install
       - name: '运行 【领京豆5个任务额外奖励脚本】'
         run: |
-          sed -ri "s/\/\/.+?\/[^\/]+\/updateTeam(@|\/raw\/)(main|master)\/jd_updateBeanHome/\/\/cdn.jsdelivr.net\/gh\/Tersd07\/test@main\/jbh/g" jd_bean_home.js
+          sed -ri "s/\/\/.+?\/[^\/]+\/updateTeam(@|\/raw\/)(main|master)\/(shareCodes\/)?jd_updateBeanHome/\/\/cdn.jsdelivr.net\/gh\/Tersd07\/test@main\/jbh/g" jd_bean_home.js
           node jd_bean_home.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
@@ -122,8 +122,9 @@ jobs:
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
       - name: '运行 【签到领现金脚本】'
         run: |
-          sed -ri -e "s/\/\/.+?\/[^\/]+\/updateTeam(@|\/raw\/)(main|master)\/jd_cash/\/\/cdn.jsdelivr.net\/gh\/Tersd07\/test@main\/cs/g"\
-              -e "s/\`-4msulY[^\`]+/\`XkJ9Ka8/g" jd_cash.js
+          sed -ri -e "s/\/\/.+?\/[^\/]+\/updateTeam(@|\/raw\/)(main|master)\/(shareCodes\/)?jd_cash/\/\/cdn.jsdelivr.net\/gh\/Tersd07\/test@main\/cs/g"\
+              -e "s/const inviteCodes =/& ['XkJ9Ka8'];/g"\
+              -e "s/const randomCount =/&3;/g" jd_cash.js
           node jd_cash.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
@@ -214,6 +215,27 @@ jobs:
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
           JDSGMH_SHARECODES: ${{ secrets.JDSGMH_SHARECODES }}
+      - name: '运行 【京东赚赚脚本】'
+        run: |
+          sed -ri -e "s/\/\/.+?\/[^\/]+\/updateTeam(@|\/raw\/)(main|master)\/(shareCodes\/)?jd_zz/\/\/cdn.jsdelivr.net\/gh\/Tersd07\/test@main\/zz/g"\
+            -e "s/const inviteCodes =/& ['Admwc2u4'];/g"\
+            -e "s/const randomCount =/&3;/g" jd_jdzz.js
+          node jd_jdzz.js
+        env:
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          JD_USER_AGENT: ${{ secrets.JD_USER_AGENT }}
+          JD_DEBUG: ${{ secrets.JD_DEBUG }}
+          PUSH_KEY: ${{ secrets.PUSH_KEY }}
+          QQ_SKEY: ${{ secrets.QQ_SKEY }}
+          QQ_MODE: ${{ secrets.QQ_MODE }}
+          BARK_PUSH: ${{ secrets.BARK_PUSH }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_USER_ID: ${{ secrets.TG_USER_ID }}
+          BARK_SOUND: ${{ secrets.BARK_SOUND }}
+          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
+          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
+          IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
+          JDZZ_SHARECODES: ${{ secrets.JDZZ_SHARECODES }}
       - name: '运行 【女装盲盒抽京豆脚本】'
         run: |
           node jd_nzmh.js
