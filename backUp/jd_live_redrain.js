@@ -48,7 +48,7 @@ async function main() {
   await updateShareCodes();
   if (!$.body) {
     await new Promise(async (resolve) => {
-      $.http.get({url: `https://purge.jsdelivr.net/gh/shylocks/Loon@main/jd_live_redrain_${scriptName}.js`}).then((resp) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@test/jd_live_redrain_${scriptName}.js`}).then((resp) => {
         if (resp.statusCode === 200)
           console.log(`${$.name}CDN缓存刷新成功`)
         resolve();
@@ -120,7 +120,7 @@ async function main() {
     eval($.body);
   }
 }
-function updateShareCodes(url = `https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain_${scriptName}.js`) {
+function updateShareCodes(url = `https://raw.githubusercontent.com/Tersd07/st1/test/jd_live_redrain_${scriptName}.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -137,7 +137,7 @@ function updateShareCodes(url = `https://raw.githubusercontent.com/shylocks/Loon
     })
   })
 }
-function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/shylocks/Loon@main/jd_live_redrain_${scriptName}.js`) {
+function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/Tersd07/st1@test/jd_live_redrain_${scriptName}.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {

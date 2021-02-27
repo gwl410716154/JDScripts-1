@@ -30,6 +30,12 @@ async function main() {
     ).replace(
       'const randomCount =',
       '$& 3; '
+    ).replace(
+      /console\.log\(`当前等级.+/,
+      '$&\nconsole.log(`等级进度：${data.user.nextLevelPercent}%`);'
+    ).replace(
+      '【当前等级】${data.user.userIdentity} ${data.user.currentLevel}',
+      '$& ${data.user.nextLevelPercent}%'
     );
     eval($.body);
   }

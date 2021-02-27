@@ -1,26 +1,96 @@
 /*
- * @Author: lxk0301 https://github.com/lxk0301 
- * @Date: 2020-11-25 18:19:21 
- * @Last Modified by: lxk0301
- * @Last Modified time: 2020-11-25 18:20:02
- */
-/*
-东东工厂，不是京喜工厂
-目前不知免费产生的电量瓶颈是多少。
-故建议5小时运行一次
-开会员任务和去京东首页点击“数码电器任务目前未做
-不会每次运行脚本都投入电力
-只有当心仪的商品存在，并且收集起来的电量满足当前商品所需电力，才投入
- */
-const $ = new Env('东东工厂');
+京东压岁钱抢百元卡
+活动时间：2021-2-1至2021-2-10
+活动入口：京东APP我的-压岁钱
+活动地址：https://unearth.m.jd.com/babelDiy/Zeus/22uHDsyHntidZV9tpwov2hrUUvmb/index.html
+已支持IOS双京东账号,Node.js支持N个京东账号
+脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+============Quantumultx===============
+[task_local]
+#京东压岁钱抢百元卡
+0 0 9,12,16,20 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_newYearMoney_lottery.js, tag=京东压岁钱抢百元卡, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true
 
-const notify = $.isNode() ? require('./sendNotify') : '';
+================Loon==============
+[Script]
+cron "0 0 9,12,16,20 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_newYearMoney_lottery.js, tag=京东压岁钱抢百元卡
+
+===============Surge=================
+京东压岁钱抢百元卡 = type=cron,cronexp="0 0 9,12,16,20 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_newYearMoney_lottery.js
+
+============小火箭=========
+京东压岁钱抢百元卡 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_newYearMoney_lottery.js, cronexpr="0 0 9,12,16,20 * * *", timeout=3600, enable=true
+ */
+
+const $ = new Env('京东压岁钱抢百元卡');
+function getJDServerTime() {
+  return new Promise(resolve => {
+    // console.log(Date.now())
+    $.get({url: "https://a.jd.com//ajax/queryServerData.html",headers:{
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+      }}, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} 获取京东服务器时间失败，请检查网路重试`)
+        } else {
+          data = JSON.parse(data);
+          $.jdTime = data['serverTime'];
+          // console.log(data['serverTime']);
+          // console.log(data['serverTime'] - Date.now())
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve($.jdTime);
+      }
+    })
+  })
+}
+async function get_diff_time() {
+  // console.log(`本机时间戳 ${Date.now()}`)
+  // console.log(`京东服务器时间戳 ${await getJDServerTime()}`)
+  const startTime = Date.now();
+  const serverTime = await getJDServerTime();
+  const endTime = Date.now();
+  return endTime - serverTime - (endTime - startTime);
+}
+async function updateDiffTime() {
+  const now = Date.now();
+  if(diff_time === undefined || now - lastTime >= 30 * 60 * 1000){
+    lastTime = now;
+    diff_time = await get_diff_time();
+    console.log(`校准本地时间与京东服务器时间差：${diff_time} ms`);
+  }
+}
+let diff_time, lastTime;
 main();
 async function main() {
+  const hours = [0, 9, 12, 16, 20];
+  while(true) {
+    await updateDiffTime();
+    const t = 15 * 1000;
+    const d = new Date(Date.now() - diff_time + (new Date().getTimezoneOffset() + 8 * 60) * 60 * 1000);
+    const cM = d.getMinutes() % 60;
+    // 如果是在非红包雨活动小时的 35分 后运行。则在下一个零时的 2.5秒 后运行。
+    const s = (((60 - cM) * 60) - d.getSeconds() + 2.5) * 1000 - d.getMilliseconds();
+    if(s < 0 || cM < 35 || (cM > 5 && cM < 50 && hours.includes(d.getHours()))) break;
+    console.log(`当前 ${
+      d.toTimeString().replace(/\s.+/, '')
+    }，${$.name}时间未到，还需等待 ${
+      (s / 1000).toFixed(0)
+    } 秒后才能继续执行。`);
+    if(s - t < 0){
+      await $.wait(s);
+      break;
+    }else{
+      await $.wait(t);
+    }
+  }
+
   await updateShareCodes();
   if (!$.body) {
     await new Promise(async (resolve) => {
-      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_jdfactory.js`}).then((resp) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_newYearMoney_lottery.js`}).then((resp) => {
         if (resp.statusCode === 200)
           console.log(`${$.name}CDN缓存刷新成功`)
         resolve();
@@ -31,51 +101,10 @@ async function main() {
     await updateShareCodesCDN();
   }
   if ($.body) {
-    $.body = $.body.replace(
-    //  /(const inviteCodes = \[)[^\]]+/,
-    //  "$1'T007w6Q5BV0CjVWnYaS5kRrbA'"
-    // ).replace(
-      /if \((new Date\(\)\.getHours\(\) === 23)\) \{[\n\r\s]+\$\.msg\(\$\.name/,
-      `if ($.isNode() && new Date().getTimezoneOffset() / 60 + 8 + $1){
-        notify.sendNotify(\`\${\$.name} - 账号\$\{\$.index} - \${\$.nickName}\`, message);
-      }
-      $&`
-    ).replace(
-      // DDFACTORY_NOTIFY_IGNORE_PRODUCTS 变量。未选择心仪商品时，
-      // 如果满足兑换电量条件，将忽略包含这些关键字的商品通知。多个关键字使用 @ 分隔。
-      /if \(\$\.isNode\(\)\) await notify.sendNotify.+?【满足】兑换\$\{\$\.canMakeList\[0\].name\}所需总电量/,
-      `const __ignore = process.env.DDFACTORY_NOTIFY_IGNORE_PRODUCTS;
-      const __canMakeName = $.canMakeList && $.canMakeList[0] && $.canMakeList[0].name;
-      if(!__ignore || !__canMakeName || __ignore && __canMakeName && !__ignore.split('@').filter(Boolean).some(str => __canMakeName.includes(str)))
-        $&`
-    ).replace(
-      'console.log(`商品名称       可选状态    剩余量`)',
-      `const __l = \$.canMakeList.map(n => Array.from(n.name).reduce((p1, n1) => p1 + (/[^\\x00-\\xff]/.test(n1) ? 2 : 1), 0));
-      const __m = Math.max(...__l) + 1;
-      let __index = 0;
-      console.log(\`商品名称\${' '.repeat(__m - 8)}\\t剩余量\\t所需电量\`)`
-    ).replace(
-      "`${item.name.slice(-4)}         ${item.sellOut === 1 ? '已抢光':'可 选'}      ${item.couponCount}`);",
-      "`${item.name + ' '.repeat(__m - __l[__index++])}\t${item.couponCount}\t${item.fullScore}`);",
-    ).replace(
-      /\(totalScore \* 1\)\)\.toFixed\(2\) \* 100/g,
-      '(totalScore * 1) * 100).toFixed(2)'
-    ).replace(
-      /message \+= `当前剩余最多商品.+/,
-      `$&;let __p = $.canMakeList.filter(p => p.sellOut !== 1 && p.fullScore * 1 <= $.batteryValue * 1);
-      __p = __p.length > 0 && __p.reduce((p, n) => p.fullScore * 1 > n.fullScore * 1 ? p : n);
-      if(__p && $.canMakeList[0] !== __p){
-        message += \`当前可换最贵商品：\${__p.name}\\n\`;
-      }`
-    ).replace(
-      "$.log(`京东账号",
-      `if(new Date(Date.now() + (new Date().getTimezoneOffset() + 8 * 60) * 60 * 1000).getHours() !== 12)
-        $.msg($.name, '', \`京东账号`
-    );
     eval($.body);
   }
 }
-function updateShareCodes(url = 'https://raw.githubusercontent.com/Tersd07/st1/master/jd_jdfactory.js') {
+function updateShareCodes(url = `https://raw.githubusercontent.com/Tersd07/st1/master/jd_newYearMoney_lottery.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -92,7 +121,7 @@ function updateShareCodes(url = 'https://raw.githubusercontent.com/Tersd07/st1/m
     })
   })
 }
-function updateShareCodesCDN(url = 'https://cdn.jsdelivr.net/gh/Tersd07/st1@master/jd_jdfactory.js') {
+function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/Tersd07/st1@master/jd_newYearMoney_lottery.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {

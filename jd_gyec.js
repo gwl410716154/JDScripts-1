@@ -15,17 +15,17 @@ boxjs 填写具体兑换商品的名称，默认为1888京豆
 ============Quantumultx===============
 [task_local]
 #工业品爱消除
-30 * * * * https://raw.githubusercontent.com/shylocks/Loon/main/jd_gyec.js, tag=工业品爱消除, img-url=https://raw.githubusercontent.com/yogayyy/Scripts/main/Icon/shylock/jd_gyxxl.png, enabled=true
+30 * * * * https://raw.githubusercontent.com/Tersd07/st1/test/jd_gyec.js, tag=工业品爱消除, img-url=https://raw.githubusercontent.com/yogayyy/Scripts/main/Icon/shylock/jd_gyxxl.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "30 * * * *" script-path=https://raw.githubusercontent.com/shylocks/Loon/main/jd_gyec.js,tag=工业品爱消除
+cron "30 * * * *" script-path=https://raw.githubusercontent.com/Tersd07/st1/test/jd_gyec.js,tag=工业品爱消除
 
 ===============Surge=================
-工业品爱消除 = type=cron,cronexp="30 * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/shylocks/Loon/main/jd_gyec.js
+工业品爱消除 = type=cron,cronexp="30 * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/Tersd07/st1/test/jd_gyec.js
 
 ============小火箭=========
-工业品爱消除 = type=cron,script-path=https://raw.githubusercontent.com/shylocks/Loon/main/jd_gyec.js, cronexpr="30 * * * *", timeout=200, enable=true
+工业品爱消除 = type=cron,script-path=https://raw.githubusercontent.com/Tersd07/st1/test/jd_gyec.js, cronexpr="30 * * * *", timeout=200, enable=true
  */
 const scriptName = (process.argv || [])[2] || 'gyec';
 const $ = new Env(scriptName === 'gyec' ? '工业品爱消除' : '东东爱消除');
@@ -34,7 +34,7 @@ async function main() {
   await updateShareCodes();
   if (!$.body) {
     await new Promise(async (resolve) => {
-      $.http.get({url: `https://purge.jsdelivr.net/gh/shylocks/Loon@main/jd_${scriptName}.js`}).then((resp) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@test/jd_${scriptName}.js`}).then((resp) => {
         if (resp.statusCode === 200)
           console.log(`${$.name}CDN缓存刷新成功`)
         resolve();
@@ -58,7 +58,7 @@ async function main() {
     eval($.body);
   }
 }
-function updateShareCodes(url = `https://raw.githubusercontent.com/shylocks/Loon/main/jd_${scriptName}.js`) {
+function updateShareCodes(url = `https://raw.githubusercontent.com/Tersd07/st1/test/jd_${scriptName}.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -75,7 +75,7 @@ function updateShareCodes(url = `https://raw.githubusercontent.com/shylocks/Loon
     })
   })
 }
-function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/shylocks/Loon@main/jd_${scriptName}.js`) {
+function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/Tersd07/st1@test/jd_${scriptName}.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {

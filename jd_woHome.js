@@ -58,11 +58,8 @@ async function main() {
   }
   if ($.body) {
     $.body = $.body.replace(
-      /\/[^\/]+\/updateTeam/g,
-      "/Tersd07/test"
-    ).replace(
-      /master\/jd_updateSmallHomeInviteCode/g,
-      'main/ushic'
+      /(https?:\/\/).+?\/updateTeam.+?jd_updateSmallHomeInviteCode(\.json)/g,
+      "$1cdn.jsdelivr.net/gh/Tersd07/test@main/ushic$2"
     );
     eval($.body);
   }

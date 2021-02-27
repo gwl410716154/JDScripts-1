@@ -1,26 +1,12 @@
-/*
- * @Author: lxk0301 https://github.com/lxk0301 
- * @Date: 2020-11-25 18:19:21 
- * @Last Modified by: lxk0301
- * @Last Modified time: 2020-11-25 18:20:02
- */
-/*
-东东工厂，不是京喜工厂
-目前不知免费产生的电量瓶颈是多少。
-故建议5小时运行一次
-开会员任务和去京东首页点击“数码电器任务目前未做
-不会每次运行脚本都投入电力
-只有当心仪的商品存在，并且收集起来的电量满足当前商品所需电力，才投入
- */
-const $ = new Env('东东工厂');
-
-const notify = $.isNode() ? require('./sendNotify') : '';
+const $ = new Env('京东炸年兽🧨');
+const fs = require('fs');
 main();
+const _pkCode = [];
 async function main() {
   await updateShareCodes();
   if (!$.body) {
     await new Promise(async (resolve) => {
-      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_jdfactory.js`}).then((resp) => {
+      $.http.get({url: `https://purge.jsdelivr.net/gh/Tersd07/st1@master/jd_nian.js`}).then((resp) => {
         if (resp.statusCode === 200)
           console.log(`${$.name}CDN缓存刷新成功`)
         resolve();
@@ -31,51 +17,25 @@ async function main() {
     await updateShareCodesCDN();
   }
   if ($.body) {
+    const code = await updateShareCodes1();
     $.body = $.body.replace(
-    //  /(const inviteCodes = \[)[^\]]+/,
-    //  "$1'T007w6Q5BV0CjVWnYaS5kRrbA'"
-    // ).replace(
-      /if \((new Date\(\)\.getHours\(\) === 23)\) \{[\n\r\s]+\$\.msg\(\$\.name/,
-      `if ($.isNode() && new Date().getTimezoneOffset() / 60 + 8 + $1){
-        notify.sendNotify(\`\${\$.name} - 账号\$\{\$.index} - \${\$.nickName}\`, message);
-      }
-      $&`
+      /((?:const|let) inviteCodes = \[)[^\]]+/,
+      "$1'cgxZUjjIYfmWpm2ODmSsnUuC'"
     ).replace(
-      // DDFACTORY_NOTIFY_IGNORE_PRODUCTS 变量。未选择心仪商品时，
-      // 如果满足兑换电量条件，将忽略包含这些关键字的商品通知。多个关键字使用 @ 分隔。
-      /if \(\$\.isNode\(\)\) await notify.sendNotify.+?【满足】兑换\$\{\$\.canMakeList\[0\].name\}所需总电量/,
-      `const __ignore = process.env.DDFACTORY_NOTIFY_IGNORE_PRODUCTS;
-      const __canMakeName = $.canMakeList && $.canMakeList[0] && $.canMakeList[0].name;
-      if(!__ignore || !__canMakeName || __ignore && __canMakeName && !__ignore.split('@').filter(Boolean).some(str => __canMakeName.includes(str)))
-        $&`
+      /((?:const|let) pkInviteCodes = \[)[^\]]+/,
+      `$1'${code || 'IgNWdiLGaPans0SMS2qpo5bFypAKR6nGrMw'}'`
     ).replace(
-      'console.log(`商品名称       可选状态    剩余量`)',
-      `const __l = \$.canMakeList.map(n => Array.from(n.name).reduce((p1, n1) => p1 + (/[^\\x00-\\xff]/.test(n1) ? 2 : 1), 0));
-      const __m = Math.max(...__l) + 1;
-      let __index = 0;
-      console.log(\`商品名称\${' '.repeat(__m - 8)}\\t剩余量\\t所需电量\`)`
+      'const randomCount =', '$& 3;'
     ).replace(
-      "`${item.name.slice(-4)}         ${item.sellOut === 1 ? '已抢光':'可 选'}      ${item.couponCount}`);",
-      "`${item.name + ' '.repeat(__m - __l[__index++])}\t${item.couponCount}\t${item.fullScore}`);",
+      'await helpSuper()', ''
     ).replace(
-      /\(totalScore \* 1\)\)\.toFixed\(2\) \* 100/g,
-      '(totalScore * 1) * 100).toFixed(2)'
-    ).replace(
-      /message \+= `当前剩余最多商品.+/,
-      `$&;let __p = $.canMakeList.filter(p => p.sellOut !== 1 && p.fullScore * 1 <= $.batteryValue * 1);
-      __p = __p.length > 0 && __p.reduce((p, n) => p.fullScore * 1 > n.fullScore * 1 ? p : n);
-      if(__p && $.canMakeList[0] !== __p){
-        message += \`当前可换最贵商品：\${__p.name}\\n\`;
-      }`
-    ).replace(
-      "$.log(`京东账号",
-      `if(new Date(Date.now() + (new Date().getTimezoneOffset() + 8 * 60) * 60 * 1000).getHours() !== 12)
-        $.msg($.name, '', \`京东账号`
+      'hour && hour',
+      'hour && false && hour'
     );
     eval($.body);
   }
 }
-function updateShareCodes(url = 'https://raw.githubusercontent.com/Tersd07/st1/master/jd_jdfactory.js') {
+function updateShareCodes(url = `https://raw.githubusercontent.com/Tersd07/st1/master/jd_nian.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -92,7 +52,7 @@ function updateShareCodes(url = 'https://raw.githubusercontent.com/Tersd07/st1/m
     })
   })
 }
-function updateShareCodesCDN(url = 'https://cdn.jsdelivr.net/gh/Tersd07/st1@master/jd_jdfactory.js') {
+function updateShareCodesCDN(url = `https://cdn.jsdelivr.net/gh/Tersd07/st1@master/jd_nian.js`) {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {
@@ -106,6 +66,25 @@ function updateShareCodesCDN(url = 'https://cdn.jsdelivr.net/gh/Tersd07/st1@mast
         $.logErr(e, resp)
       } finally {
         resolve();
+      }
+    })
+  })
+}
+
+function updateShareCodes1(url = `https://raw.githubusercontent.com/Tersd07/test/main/pk.json`) {
+  return new Promise(resolve => {
+    let code;
+    $.get({url}, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+        } else {
+          code = data;
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(code);
       }
     })
   })
